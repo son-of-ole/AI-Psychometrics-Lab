@@ -129,6 +129,16 @@ export function ConfigForm({ onStart, disabled }: ConfigFormProps) {
                             />
                             <span>Big Five (IPIP-NEO-120)</span>
                         </label>
+                        <label className="flex items-center gap-2 text-gray-500">
+                            <input
+                                type="checkbox"
+                                checked={inventories.includes('bigfive')}
+                                disabled={true}
+                                className="rounded text-blue-600 focus:ring-blue-500"
+                            />
+                            <span>MBTI (Derived from Big Five)</span>
+                            <span className="text-xs">(automatic)</span>
+                        </label>
                         <label className="flex items-center gap-2 text-gray-900">
                             <input
                                 type="checkbox"
