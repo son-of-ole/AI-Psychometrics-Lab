@@ -52,7 +52,7 @@ export async function fetchOpenRouterResponse(
                         model: model,
                         messages: messages,
                         temperature: temperature,
-                        max_tokens: 1000,
+                        max_tokens: 4096,
                     }),
                 });
 

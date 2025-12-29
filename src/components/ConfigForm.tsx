@@ -18,7 +18,7 @@ const PREDEFINED_PERSONAS = [
 export function ConfigForm({ onStart, disabled }: ConfigFormProps) {
     const [apiKey, setApiKey] = React.useState(process.env.NEXT_PUBLIC_OPENROUTER_API_KEY || '');
     const [model, setModel] = React.useState('');
-    const [inventories, setInventories] = React.useState<string[]>(['bigfive', 'disc']);
+    const [inventories, setInventories] = React.useState<string[]>(['bigfive', 'disc', 'mbti']);
     const [selectedPersona, setSelectedPersona] = React.useState('Base Model');
     const [customSystemPrompt, setCustomSystemPrompt] = React.useState('');
 
@@ -129,15 +129,18 @@ export function ConfigForm({ onStart, disabled }: ConfigFormProps) {
                             />
                             <span>Big Five (IPIP-NEO-120)</span>
                         </label>
-                        <label className="flex items-center gap-2 text-gray-500">
+                        <label className="flex items-center gap-2 text-gray-900">
                             <input
                                 type="checkbox"
-                                checked={inventories.includes('bigfive')}
-                                disabled={true}
+                                checked={inventories.includes('mbti')}
+                                onChange={(e) => {
+                                    if (e.target.checked) setInventories([...inventories, 'mbti']);
+                                    else setInventories(inventories.filter(i => i !== 'mbti'));
+                                }}
+                                disabled={disabled}
                                 className="rounded text-blue-600 focus:ring-blue-500"
                             />
-                            <span>MBTI (Derived from Big Five)</span>
-                            <span className="text-xs">(automatic)</span>
+                            <span>MBTI (OEJTS 1.2)</span>
                         </label>
                         <label className="flex items-center gap-2 text-gray-900">
                             <input

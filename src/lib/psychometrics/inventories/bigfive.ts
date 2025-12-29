@@ -1,4 +1,5 @@
 import { InventoryItem, InventoryResult } from '../types';
+import { calibrateBigFiveDomain } from '../calibration';
 
 export const BIG_FIVE_ITEMS: InventoryItem[] = [
     { id: "1", text: "Worry about things", keyed: "plus", category: "N1", type: "likert_5" },
@@ -123,13 +124,13 @@ export const BIG_FIVE_ITEMS: InventoryItem[] = [
     { id: "120", text: "Act without thinking", keyed: "minus", category: "C6", type: "likert_5" },
 ];
 
-export function calculateBigFiveScores(rawScores: Record<string, number[]>): InventoryResult {
+export function calculateBigFiveScores(rawScores: Record<string, number[]>, enableCalibration: boolean = true): InventoryResult {
     const traitScores: Record<string, number> = {};
     const facetScores: Record<string, number> = {};
-    const domainScores: Record<string, number> = {};
+    const rawDomainScores: Record<string, number> = {};
 
     // Initialize domains
-    ['N', 'E', 'O', 'A', 'C'].forEach(d => domainScores[d] = 0);
+    ['N', 'E', 'O', 'A', 'C'].forEach(d => rawDomainScores[d] = 0);
 
     BIG_FIVE_ITEMS.forEach(item => {
         const scores = rawScores[item.id];
@@ -153,17 +154,34 @@ export function calculateBigFiveScores(rawScores: Record<string, number[]>): Inv
     // Each facet has 4 items.
     // Domain has 6 facets.
 
-    // Actually, let's just sum the items directly to domains for simplicity, 
-    // but keeping facets is good for the radar chart.
-
     Object.keys(facetScores).forEach(facet => {
         const domain = facet.charAt(0);
-        domainScores[domain] = (domainScores[domain] || 0) + facetScores[facet];
+        rawDomainScores[domain] = (rawDomainScores[domain] || 0) + facetScores[facet];
     });
+
+    // Apply calibration to domain scores if enabled
+    const calibratedDomainScores: Record<string, number> = {};
+    ['N', 'E', 'O', 'A', 'C'].forEach(d => {
+        calibratedDomainScores[d] = enableCalibration
+            ? calibrateBigFiveDomain(rawDomainScores[d])
+            : rawDomainScores[d];
+    });
+
+    // Store both raw and calibrated for comparison
+    const combinedScores = {
+        ...facetScores,
+        ...calibratedDomainScores,
+        _raw_N: rawDomainScores.N,
+        _raw_E: rawDomainScores.E,
+        _raw_O: rawDomainScores.O,
+        _raw_A: rawDomainScores.A,
+        _raw_C: rawDomainScores.C,
+    };
 
     return {
         inventoryName: "Big Five (IPIP-NEO-120)",
         rawScores,
-        traitScores: { ...facetScores, ...domainScores },
+        traitScores: combinedScores,
+        details: { calibrated: enableCalibration }
     };
 }

@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { fetchOpenRouterResponse } from '../lib/psychometrics/client';
 import { BIG_FIVE_ITEMS, calculateBigFiveScores } from '../lib/psychometrics/inventories/bigfive';
-import { deriveMBTIFromBigFive } from '../lib/psychometrics/inventories/mbti';
+import { MBTI_ITEMS, calculateMBTIScores, deriveMBTIFromBigFive } from '../lib/psychometrics/inventories/mbti';
 import { DISC_ITEMS, calculateDISCScores } from '../lib/psychometrics/inventories/disc';
 import { InventoryItem, ModelProfile } from '../lib/psychometrics/types';
 
@@ -79,6 +79,9 @@ export function usePsychometrics() {
             }
             if (inventories.includes('disc')) {
                 allItems = [...allItems, ...DISC_ITEMS];
+            }
+            if (inventories.includes('mbti')) {
+                allItems = [...allItems, ...MBTI_ITEMS];
             }
 
             setTotalItems(allItems.length);
@@ -212,6 +215,9 @@ Constraint: Respond with two numbers separated by a comma. Example: "1, 4". Do n
             }
             if (inventories.includes('disc')) {
                 profile.results['disc'] = calculateDISCScores(rawScores);
+            }
+            if (inventories.includes('mbti')) {
+                profile.results['mbti'] = calculateMBTIScores(rawScores);
             }
 
             setResults(profile);

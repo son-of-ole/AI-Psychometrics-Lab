@@ -5,6 +5,10 @@ export interface InventoryItem {
   category?: string; // e.g., "Neuroticism", "E1"
   keyed?: 'plus' | 'minus'; // For reverse coding
   options?: string[]; // For choice questions
+  // MBTI specific
+  leftText?: string;
+  rightText?: string;
+  dimension?: 'IE' | 'SN' | 'TF' | 'JP';
 }
 
 export interface InventoryResult {

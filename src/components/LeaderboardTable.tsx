@@ -236,7 +236,7 @@ export function LeaderboardTable({ data }: LeaderboardTableProps) {
         <div className="bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100 relative">
             {/* Search Bar & Actions */}
             <div className="p-4 border-b border-gray-100 bg-gray-50 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-                <div className="flex items-center gap-3 flex-1 bg-white md:bg-transparent p-2 md:p-0 rounded border md:border-none border-gray-200">
+                <div className="flex items-center gap-3 flex-1 bg-white md:bg-transparent p-2 md:p-0 rounded border md:border-none border-gray-200" suppressHydrationWarning>
                     <Search className="w-5 h-5 text-gray-400" />
                     <input
                         type="text"

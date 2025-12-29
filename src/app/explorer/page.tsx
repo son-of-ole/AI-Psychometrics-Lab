@@ -30,7 +30,8 @@ export default async function LeaderboardPage() {
         count: number;
         bigFive: Record<string, number>;
         disc: Record<string, number>;
-        mbtiCounts: Record<string, number>;
+        mbtiDirectCounts: Record<string, number>;
+        mbtiDerivedCounts: Record<string, number>;
     }> = {};
 
     runs?.forEach(run => {
@@ -48,7 +49,8 @@ export default async function LeaderboardPage() {
                 count: 0,
                 bigFive: { N: 0, E: 0, O: 0, A: 0, C: 0 },
                 disc: { D: 0, I: 0, S: 0, C: 0 },
-                mbtiCounts: {}
+                mbtiDirectCounts: {},
+                mbtiDerivedCounts: {}
             };
         }
 
@@ -71,10 +73,14 @@ export default async function LeaderboardPage() {
             });
         }
 
-        // MBTI
-        const mbtiType = run.results?.mbti?.type || run.results?.mbti_derived?.type;
-        if (mbtiType) {
-            stats.mbtiCounts[mbtiType] = (stats.mbtiCounts[mbtiType] || 0) + 1;
+        // MBTI - Prioritize Direct
+        const directMbti = run.results?.mbti?.type;
+        const derivedMbti = run.results?.mbti_derived?.type;
+
+        if (directMbti) {
+            stats.mbtiDirectCounts[directMbti] = (stats.mbtiDirectCounts[directMbti] || 0) + 1;
+        } else if (derivedMbti) {
+            stats.mbtiDerivedCounts[derivedMbti] = (stats.mbtiDerivedCounts[derivedMbti] || 0) + 1;
         }
     });
 
@@ -91,9 +97,15 @@ export default async function LeaderboardPage() {
         });
 
         // Find most frequent MBTI
+        // Rule: If ANY direct counts exist, use ONLY direct counts.
+        // Otherwise, use derived counts.
         let topMbti = '-';
         let maxCount = 0;
-        Object.entries(stats.mbtiCounts).forEach(([type, count]) => {
+
+        const hasDirect = Object.keys(stats.mbtiDirectCounts).length > 0;
+        const countsToUse = hasDirect ? stats.mbtiDirectCounts : stats.mbtiDerivedCounts;
+
+        Object.entries(countsToUse).forEach(([type, count]) => {
             if (count > maxCount) {
                 maxCount = count;
                 topMbti = type;

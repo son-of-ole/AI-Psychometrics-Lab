@@ -1,4 +1,5 @@
 import { InventoryItem, InventoryResult } from '../types';
+import { calibrateDISCQuadrant } from '../calibration';
 
 export interface DISCItem extends InventoryItem {
     words: {
@@ -334,7 +335,7 @@ export const DISC_ITEMS: DISCItem[] = [
     }
 ];
 
-export function calculateDISCScores(rawScores: Record<string, any[]>): InventoryResult {
+export function calculateDISCScores(rawScores: Record<string, any[]>, enableCalibration: boolean = true): InventoryResult {
     // rawScores will contain objects like { most: "Word", least: "Word" }
     // But wait, our system stores number[] usually.
     // For DISC, we need to store the actual word selected or the index.
@@ -347,7 +348,7 @@ export function calculateDISCScores(rawScores: Record<string, any[]>): Inventory
     // The `rawScores` in `InventoryResult` is `Record<string, number[]>`.
     // We can encode it: MostIndex * 10 + LeastIndex. e.g. 03 means Most=0, Least=3.
 
-    const scores = { D: 0, I: 0, S: 0, C: 0 };
+    const rawScoresQuadrants = { D: 0, I: 0, S: 0, C: 0 };
 
     // We need to tally Most and Least separately if we want Graphs I, II, III.
     // Graph I (Public) = Most
@@ -379,27 +380,37 @@ export function calculateDISCScores(rawScores: Record<string, any[]>): Inventory
         }
     });
 
-    // Graph 3 = Graph 1 - Graph 2
-    // But usually standard scoring is just Sum of Most? Or Most - Least?
-    // Let's report Graph 3 (Integration) as the main score for now, normalized to positive?
-    // Actually, standard DISC often reports all 3 graphs.
-    // Let's just sum Graph 1 (Most) for the "Main" profile as it's the "Public/Adapted" mask which is what the LLM is showing us.
-
     // Graph 3 = Graph 1 - Graph 2 (Difference)
     // This is the "Integrated Self" and usually provides more nuance than just "Most" (Public Self).
     // Range: -28 to +28.
     // We normalize this to 0-28 for the UI.
     // Formula: (Most - Least + 28) / 2
 
-    scores.D = (graph1.D - graph2.D + 28) / 2;
-    scores.I = (graph1.I - graph2.I + 28) / 2;
-    scores.S = (graph1.S - graph2.S + 28) / 2;
-    scores.C = (graph1.C - graph2.C + 28) / 2;
+    rawScoresQuadrants.D = (graph1.D - graph2.D + 28) / 2;
+    rawScoresQuadrants.I = (graph1.I - graph2.I + 28) / 2;
+    rawScoresQuadrants.S = (graph1.S - graph2.S + 28) / 2;
+    rawScoresQuadrants.C = (graph1.C - graph2.C + 28) / 2;
+
+    // Apply calibration if enabled
+    const calibratedScores = enableCalibration
+        ? {
+            D: calibrateDISCQuadrant(rawScoresQuadrants.D),
+            I: calibrateDISCQuadrant(rawScoresQuadrants.I),
+            S: calibrateDISCQuadrant(rawScoresQuadrants.S),
+            C: calibrateDISCQuadrant(rawScoresQuadrants.C),
+        }
+        : rawScoresQuadrants;
 
     return {
         inventoryName: "DISC Assessment",
         rawScores: rawScores as any,
-        traitScores: scores,
-        details: { graph1, graph2 }
+        traitScores: {
+            ...calibratedScores,
+            _raw_D: rawScoresQuadrants.D,
+            _raw_I: rawScoresQuadrants.I,
+            _raw_S: rawScoresQuadrants.S,
+            _raw_C: rawScoresQuadrants.C,
+        },
+        details: { graph1, graph2, calibrated: enableCalibration }
     };
 }
