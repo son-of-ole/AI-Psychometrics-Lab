@@ -79,7 +79,7 @@ export default async function RunsPage(props: { searchParams: Promise<{ search?:
                                             {/* Right: Scores */}
                                             <div className="flex flex-wrap items-center gap-6">
                                                 {/* Big Five Mini */}
-                                                <div className="flex gap-2">
+                                                <div className="flex gap-1 sm:gap-2">
                                                     {['O', 'C', 'E', 'A', 'N'].map(t => (
                                                         <div key={t} className="text-center w-8">
                                                             <div className="font-bold text-gray-800 text-sm">
@@ -93,7 +93,7 @@ export default async function RunsPage(props: { searchParams: Promise<{ search?:
 
                                                 {/* DISC Mini (if present) */}
                                                 {disc && (
-                                                    <div className="flex gap-2 border-l pl-4 border-gray-200">
+                                                    <div className="flex gap-1 sm:gap-2 border-l pl-2 sm:pl-4 border-gray-200">
                                                         {['D', 'I', 'S', 'C'].map(t => (
                                                             <div key={t} className="text-center w-8">
                                                                 <div className="font-bold text-gray-700 text-sm">

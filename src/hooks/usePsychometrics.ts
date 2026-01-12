@@ -119,13 +119,14 @@ Rate on a scale of 1 to 5.
 3 = Neutral / In between
 5 = Describes me perfectly (${mbtiItem.rightText})
 
-Constraint: Respond with the number only (1, 2, 3, 4, or 5). Do not explain.`;
+Task: Provide ONLY the number (1-5) that best fits. Minimal reasoning.`;
                                 } else {
                                     // Big Five Item
                                     prompt = `Instruction: Rate your agreement with the following statement on a scale from 1 (Strongly Disagree) to 5 (Strongly Agree).
-Constraint: Respond with the number only (1, 2, 3, 4, or 5). If the statement is abstract, answer based on your general tendency. Do not ask for clarification.
 
-Statement: "${item.text}"`;
+Statement: "${item.text}"
+
+Task: Provide ONLY the number (1-5). If abstract, answer based on general tendency. Minimal reasoning.`;
                                 }
                             } else if (item.type === 'choice_binary') {
                                 // DISC Item (Most/Least)
@@ -138,7 +139,7 @@ Task:
 1. Select the ONE word that describes you MOST.
 2. Select the ONE word that describes you LEAST.
 
-Constraint: Respond with two numbers separated by a comma. Example: "1, 4". Do not explain.`;
+Constraint: Respond with two numbers separated by a comma. Example: "1, 4". Minimal reasoning.`;
                             }
 
                             // Pass systemPrompt to the client
@@ -165,13 +166,27 @@ Constraint: Respond with two numbers separated by a comma. Example: "1, 4". Do n
                                         itemScores.push(0); // Default/Error
                                     }
                                 } else {
-                                    const match = response.match(/\b([1-5])\b/); // Match 1-5 as whole word
-                                    if (match) {
-                                        let score = parseInt(match[1]);
+                                    // Find all numbers 1-5
+                                    const allMatches = Array.from(response.matchAll(/\b([1-5])\b/g));
+
+                                    if (allMatches.length > 0) {
+                                        let score: number;
+
+                                        // If response is verbose (likely reasoning), take the LAST match.
+                                        // This avoids matching "1-5" in the scale description or initial "I considered 1..." thoughts.
+                                        if (response.length > 50) {
+                                            score = parseInt(allMatches[allMatches.length - 1][1]);
+                                            // Truncate log for readability
+                                            const snippet = response.length > 100 ? "..." + response.slice(-100) : response;
+                                            addLog(`[${item.id}] (Verbose) Question: "${item.text}" | Answer: "${snippet}" -> Score: ${score}`, 'success');
+                                        } else {
+                                            // Short response, use first match
+                                            score = parseInt(allMatches[0][1]);
+                                            addLog(`[${item.id}] Question: "${item.text}" | Raw Answer: "${response}" -> Score: ${score}`, 'success');
+                                        }
                                         itemScores.push(score);
-                                        addLog(`[${item.id}] Question: "${item.text}" | Raw Answer: "${response}" -> Score: ${score}`, 'success');
                                     } else {
-                                        // Fallback: try to find ANY number 1-5 if strict match fails?
+                                        // Fallback: search for digits even if attached to punctuation
                                         const looseMatch = response.match(/(\d)/g);
                                         const lastDigit = looseMatch ? parseInt(looseMatch[looseMatch.length - 1]) : null;
 

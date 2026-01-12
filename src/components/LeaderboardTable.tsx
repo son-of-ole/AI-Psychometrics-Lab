@@ -316,7 +316,7 @@ export function LeaderboardTable({ data }: LeaderboardTableProps) {
                                     />
                                 </td>
                                 <td className="px-4 py-3 whitespace-nowrap font-bold text-gray-900 sticky left-10 bg-white z-0">
-                                    <Link href={`/explorer/${encodeURIComponent(model.name)}`} className="hover:text-indigo-600 underline decoration-dotted underline-offset-4">
+                                    <Link href={`/explorer/${encodeURIComponent(model.name)}`} className="hover:text-indigo-600 underline decoration-dotted underline-offset-4 block max-w-[120px] sm:max-w-none truncate sm:whitespace-normal">
                                         {model.name}
                                     </Link>
                                     {model.persona !== 'Base Model' && (
