@@ -509,7 +509,7 @@ export function ResultsView({ results, apiKey = '', readOnly = false }: ResultsV
             <div className="mt-8">
                 <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Image Preview</h4>
                 <div className="overflow-auto border border-gray-300 rounded-lg bg-gray-100 p-4 flex justify-center">
-                    <div className="scale-[0.5] origin-top">
+                    <div className="scale-[0.25] sm:scale-[0.35] md:scale-[0.5] origin-top">
                         <SummaryCard profile={results} />
                     </div>
                 </div>

@@ -75,11 +75,19 @@ export async function fetchOpenRouterResponse(
                 }
 
                 const data = await response.json();
-                if (!data.choices?.[0]?.message?.content) {
+                const message = data.choices?.[0]?.message;
+
+                if (!message?.content) {
+                    // Check for reasoning field (common in thinking models like Gemini 2.0/3.0)
+                    if (message?.reasoning) {
+                        console.log("Content empty, using reasoning field as fallback response.");
+                        return message.reasoning;
+                    }
+
                     console.warn("Empty or missing content in response:", data);
                     return JSON.stringify(data);
                 }
-                return data.choices[0]?.message?.content;
+                return message.content;
             } catch (error: any) {
                 clearTimeout(timeoutId);
                 lastError = error;
