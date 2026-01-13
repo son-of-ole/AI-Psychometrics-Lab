@@ -1,7 +1,18 @@
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 
-export const revalidate = 0; // Dynamic, no cache
+export const revalidate = 0; /**
+ * Render the Recent Runs page showing past run records and related UI states.
+ *
+ * Fetches up to 50 runs from the configured Supabase backend, optionally filters by a provided search query on model name, and renders:
+ * - a warning when Supabase is not configured,
+ * - an error message when loading fails,
+ * - a list of runs with per-run metadata and compact score summaries (Big Five, DISC, Dark Triad, MBTI),
+ * - an empty-state message when no runs are available.
+ *
+ * @param props.searchParams - A promise that resolves to an object containing an optional `search` string used to filter runs by model name.
+ * @returns The page element that displays the recent runs list and its associated states.
+ */
 
 export default async function RunsPage(props: { searchParams: Promise<{ search?: string }> }) {
     const searchParams = await props.searchParams;

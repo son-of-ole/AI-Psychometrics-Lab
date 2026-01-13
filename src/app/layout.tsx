@@ -9,6 +9,12 @@ export const metadata: Metadata = {
     description: "Stateless Independent Context Window Approach",
 };
 
+/**
+ * Renders the application's root HTML structure including a sticky header and a main content area.
+ *
+ * @param children - The page content to render inside the layout's main element.
+ * @returns The full HTML layout element containing the header and the provided children.
+ */
 export default function RootLayout({
     children,
 }: Readonly<{

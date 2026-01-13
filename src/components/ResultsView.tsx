@@ -34,6 +34,18 @@ interface ResultsViewProps {
     sourceLabel?: string;
 }
 
+/**
+ * Render a comprehensive psychometric profile UI for a model run.
+ *
+ * Displays Big Five radar and interpretations, MBTI visualization, DISC and Dark Triad panels,
+ * a downloadable/previewable summary card, share modal, optional upload to leaderboard, and
+ * verification/audit logs when present.
+ *
+ * @param props.results - ModelProfile containing the computed results and metadata to present
+ * @param props.apiKey - Optional API key used for backend interactions (defaults to empty string)
+ * @param props.readOnly - When true, hide actions that persist or upload results (defaults to false)
+ * @param props.sourceLabel - Optional human-readable label indicating the source of the run (forwarded to SummaryCard)
+ * @returns A React element that renders the full psychometric profile UI with controls for download, share, and save.
 export function ResultsView({ results, apiKey = '', readOnly = false, sourceLabel }: ResultsViewProps) {
     const [isGenerating, setIsGenerating] = useState(false);
     const [isSaving, setIsSaving] = useState(false);

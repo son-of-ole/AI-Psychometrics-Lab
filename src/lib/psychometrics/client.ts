@@ -1,3 +1,14 @@
+/**
+ * Request a chat completion from OpenRouter and return the assistant's text response.
+ *
+ * @param apiKey - OpenRouter API key used for Authorization
+ * @param model - Model identifier to request (e.g., "gpt-4o-mini")
+ * @param prompt - User prompt to send as the final user message
+ * @param temperature - Sampling temperature for the completion (default: 0.7)
+ * @param systemPrompt - Optional system message to include before the user prompt
+ * @returns The assistant's message content. If `content` is missing, returns the `reasoning` field when present or the raw response JSON string as a fallback.
+ * @throws Error when the API returns a non-retriable error or when all retry attempts/timeouts fail
+ */
 export async function fetchOpenRouterResponse(
     apiKey: string,
     model: string,

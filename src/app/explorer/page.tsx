@@ -2,7 +2,15 @@ import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import { LeaderboardTable } from '@/components/LeaderboardTable';
 
-export const revalidate = 60; // Cache for 60 seconds
+export const revalidate = 60; /**
+ * Render the leaderboard page by aggregating up to 1000 run records into per-model/per-persona statistics.
+ *
+ * Aggregation computes counts, average Big Five, DISC, and Dark Triad scores, and selects the top MBTI
+ * (preferring direct MBTI results over derived). If the backend is not configured or the query fails,
+ * the returned element displays an appropriate message.
+ *
+ * @returns A React element that renders the leaderboard table populated with the computed model/persona statistics or an error notice when data cannot be loaded.
+ */
 
 export default async function LeaderboardPage() {
     if (!supabase) {

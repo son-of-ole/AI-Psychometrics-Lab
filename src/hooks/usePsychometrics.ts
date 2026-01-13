@@ -12,6 +12,19 @@ export interface LogEntry {
     type: 'info' | 'error' | 'success';
 }
 
+/**
+ * Provides state and actions to run psychometric inventory tests against an LLM model.
+ *
+ * The hook manages test execution state, incremental logs, progress tracking, and final scored results for requested inventories.
+ *
+ * @returns An object with:
+ * - `isRunning` — `true` while a test is in progress, `false` otherwise.
+ * - `progress` — number of items completed so far.
+ * - `totalItems` — total number of inventory items scheduled for sampling.
+ * - `logs` — array of recent `LogEntry` objects shown in the UI.
+ * - `results` — final `ModelProfile` containing `results`, `modelName`, `persona`, `systemPrompt`, `timestamp`, and full `logs`, or `null` if no run has completed.
+ * - `runTest(apiKey, model, inventories, persona?, systemPrompt?)` — starts a test run; `apiKey` and `model` select the LLM, `inventories` is an array of inventory keys (e.g., `'bigfive'`, `'disc'`, `'mbti'`, `'darktriad'`), `persona` is an optional descriptive label, and `systemPrompt` is an optional system instruction. The function performs multiple samples per item, accumulates raw responses, computes inventory scores, and populates `results`.
+ */
 export function usePsychometrics() {
     const [isRunning, setIsRunning] = useState(false);
     const [progress, setProgress] = useState(0);

@@ -15,6 +15,17 @@ const PREDEFINED_PERSONAS = [
     { id: 'Custom', name: 'Custom Persona...', prompt: '' },
 ];
 
+/**
+ * Configuration form for collecting an OpenRouter API key, model ID, persona (or custom system prompt), and selected inventories.
+ *
+ * Submits the collected values to `onStart` when both API key and model are provided.
+ *
+ * @param onStart - Callback invoked on successful submit with arguments `(apiKey, model, inventories, personaId, systemPrompt)`.
+ *                  `personaId` is the selected persona's id (e.g., `'Base Model'` or `'Custom'`). `systemPrompt` is the selected persona's predefined prompt or the custom prompt when `personaId` is `'Custom'`.
+ * @param disabled - When `true`, disables all form inputs and changes the submit button label to "Running Test...".
+ *
+ * @returns The configuration form UI as a React element.
+ */
 export function ConfigForm({ onStart, disabled }: ConfigFormProps) {
     const [apiKey, setApiKey] = React.useState(process.env.NEXT_PUBLIC_OPENROUTER_API_KEY || '');
     const [model, setModel] = React.useState('');

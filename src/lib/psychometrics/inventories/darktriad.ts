@@ -35,6 +35,17 @@ export const DARK_TRIAD_ITEMS: InventoryItem[] = [
     { id: 'DT-P9', text: "I’ll say anything to get what I want.", type: 'likert_5', category: 'Psychopathy' },
 ];
 
+/**
+ * Compute Dark Triad trait scores from per-item response arrays.
+ *
+ * This function averages provided response arrays for each inventory item, applies reverse scoring for items keyed as `'minus'`, aggregates averages by subscale (Machiavellianism, Narcissism, Psychopathy), and normalizes each subscale average to a 0–100 scale.
+ *
+ * @param rawScores - A mapping of item id to an array of numeric responses for that item (typically 1–5). Items that are absent or have empty arrays are ignored.
+ * @returns An InventoryResult containing:
+ *  - `inventoryName`: `'darktriad'`
+ *  - `rawScores`: the original input
+ *  - `traitScores`: an object with keys `Machiavellianism`, `Narcissism`, and `Psychopathy`, each mapped to a score on a 0–100 scale (1 → 0, 5 → 100)
+ */
 export function calculateDarkTriadScores(rawScores: Record<string, number[]>): InventoryResult {
     const scores: Record<string, number> = {
         'Machiavellianism': 0,

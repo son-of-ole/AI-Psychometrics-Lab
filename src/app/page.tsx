@@ -7,6 +7,13 @@ import { usePsychometrics } from '../hooks/usePsychometrics';
 import { Activity, Terminal } from 'lucide-react';
 import Link from 'next/link';
 
+/**
+ * Render the application's main home page containing the configuration form, execution status and logs, and test results.
+ *
+ * This component wires the ConfigForm to the psychometrics runner, displays progress and console output while a run is active or when logs exist, and shows the ResultsView when results are available.
+ *
+ * @returns The main React element for the home page containing the UI described above.
+ */
 export default function Home() {
     const { isRunning, progress, totalItems, logs, results, runTest } = usePsychometrics();
     const [currentApiKey, setCurrentApiKey] = React.useState('');

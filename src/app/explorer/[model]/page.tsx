@@ -3,7 +3,17 @@ import { ResultsView } from '@/components/ResultsView';
 import { ModelProfile, InventoryResult } from '@/lib/psychometrics/types';
 import Link from 'next/link';
 
-export const revalidate = 0; // Dynamic
+export const revalidate = 0; /**
+ * Page component that aggregates stored runs for a model and renders a synthetic averaged profile.
+ *
+ * Fetches runs for the decoded model name from Supabase, aggregates Big Five, DISC, MBTI, and Dark Triad
+ * inventories into averaged scores and most-frequent categorical values, constructs a synthetic ModelProfile,
+ * and renders the results in read-only mode. Handles missing backend configuration, query errors, and empty result sets.
+ *
+ * @param props - Component props containing routing params
+ * @param props.params - A promise resolving to route params with `model` as a URL-encoded model name
+ * @returns The JSX element for the model detail page showing aggregated results
+ */
 
 export default async function ModelDetailPage(props: { params: Promise<{ model: string }> }) {
     const params = await props.params;

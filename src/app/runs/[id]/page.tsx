@@ -12,6 +12,17 @@ interface PageProps {
     params: Promise<{ id: string }>;
 }
 
+/**
+ * Server-side page component that fetches a run by ID and renders its details and results.
+ *
+ * Attempts to load the run record for the provided `id` and displays a detailed run page
+ * (model name, optional version, metadata and a ResultsView with execution logs). If the
+ * Supabase client is unavailable, renders a backend-not-configured message. If the run
+ * cannot be found or an error occurs, renders a "Run Not Found" message with a link to browse recent runs.
+ *
+ * @param params - An object (or promise resolving to an object) containing the `id` of the run to display.
+ * @returns The page React element showing the run details, or an informational message when missing or misconfigured.
+ */
 export default async function RunDetailPage({ params }: PageProps) {
     if (!supabase) {
         return <div className="p-8 text-center">Backend not configured.</div>;
