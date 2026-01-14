@@ -31,6 +31,16 @@ const CHART_COLORS = [
     'rgba(255, 159, 64, 0.5)',   // Orange
 ];
 
+/**
+ * Render a psychometric comparison UI for multiple profiles.
+ *
+ * Displays an overview (radar chart and profile table), a detailed metric comparison table
+ * (Big Five, DISC, Dark Triad) with interactive rows, and a bottom panel of pinned metric
+ * bar charts for selected metrics.
+ *
+ * @param comparisonModels - Array of profile objects used to populate charts, tables, and metric comparisons
+ * @returns The rendered psychometric comparison view
+ */
 export function CompareClientView({ comparisonModels }: CompareClientViewProps) {
     const [selectedMetrics, setSelectedMetrics] = useState<string[]>([]);
 

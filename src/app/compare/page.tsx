@@ -11,6 +11,12 @@ interface PageProps {
 
 export const revalidate = 60;
 
+/**
+ * Server component that aggregates run results for the selected model/persona pairs and renders the comparison view.
+ *
+ * @param searchParams - An object (possibly a Promise) containing an optional `ids` string: a comma-separated list of decoded `modelName::persona` identifiers selected for comparison.
+ * @returns A React element that renders either a "no models selected" or backend/error message UI, or the CompareClientView populated with computed comparison models (averaged Big Five, DISC, Dark Triad, MBTI majority, and counts).
+ */
 export default async function ComparePage({ searchParams }: PageProps) {
     const { ids } = await searchParams;
 

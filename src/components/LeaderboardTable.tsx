@@ -38,6 +38,14 @@ const getScoreColor = (score: number, type: 'bigfive' | 'disc') => {
     }
 };
 
+/**
+ * Render a searchable, sortable, and filterable leaderboard table of models with selectable comparison.
+ *
+ * Displays model rows with counts, MBTI, Big Five, DISC, and Dark Triad scores; supports text search, persona filtering, column sorting, and selecting up to three models for comparison. Selecting two or more models enables navigation to the `/compare` route with selected model IDs; attempting to select more than three shows an alert. Column headers provide trait tooltips and MBTI descriptions.
+ *
+ * @param data - Array of leaderboard entries to display (each entry includes id, name, persona, counts, and trait scores)
+ * @returns The rendered leaderboard table React element
+ */
 export function LeaderboardTable({ data }: LeaderboardTableProps) {
     const [search, setSearch] = useState('');
     const [sortField, setSortField] = useState<SortField>('count');

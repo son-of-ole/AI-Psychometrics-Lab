@@ -58,6 +58,20 @@ const CHART_BG_COLORS = [
 
 import { Download } from 'lucide-react';
 
+/**
+ * Render a radar chart comparing Big Five trait scores across provided models.
+ *
+ * Renders a styled comparison view containing a Radar chart for Openness, Conscientiousness,
+ * Extraversion, Agreeableness, and Neuroticism for each model. Includes a header, footer with
+ * the current date, and a download control that exports the chart area as a PNG.
+ *
+ * @param models - Array of model descriptors. Each model must include:
+ *   - `id`: unique identifier
+ *   - `name`: display name
+ *   - `persona`: persona label (e.g., "Base Model" or other)
+ *   - `scores`: record mapping trait keys `'O' | 'C' | 'E' | 'A' | 'N'` to numeric scores
+ * @returns The chart UI as a JSX element, or `null` when `models` is empty.
+ */
 export function ComparisonChart({ models }: ComparisonChartProps) {
     const [dateString, setDateString] = React.useState('');
     const chartRef = React.useRef<HTMLDivElement>(null);

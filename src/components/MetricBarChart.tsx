@@ -36,6 +36,22 @@ interface MetricBarChartProps {
 import { Download } from 'lucide-react';
 import React, { useRef, useState } from 'react';
 
+/**
+ * Render a responsive bar chart for a metric across multiple models and provide an export-to-PNG control.
+ *
+ * Renders a Chart.js Bar showing each model's metric value, displays an optional description and metadata, and includes a download button that exports the chart container as a PNG while excluding elements with `data-ignore-download`.
+ *
+ * @param metricName - Human-readable metric title shown as the chart heading.
+ * @param description - Optional explanatory text shown under the title.
+ * @param models - Array of model entries to plot. Each entry should include:
+ *   - `id`: unique identifier
+ *   - `name`: model display name
+ *   - `persona?`: optional persona string (when present and not "Base Model" it is appended to the label)
+ *   - `value`: numeric metric value plotted on the chart
+ *   - `color`: CSS color used for the bar and border
+ * @param maxValue - Upper bound for the chart's y-axis scale.
+ * @returns The component's rendered JSX element.
+ */
 export function MetricBarChart({ metricName, description, models, maxValue }: MetricBarChartProps) {
     const chartRef = useRef<HTMLDivElement>(null);
     const [isDownloading, setIsDownloading] = useState(false);

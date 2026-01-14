@@ -3,6 +3,12 @@
 import { supabase } from '@/lib/supabase';
 import { ModelProfile } from '@/lib/psychometrics/types';
 
+/**
+ * Persist a model run record to the Supabase `runs` table.
+ *
+ * @param profile - The run data to persist. Uses `profile.modelName`, `profile.persona` (defaults to "Base Model" if undefined), `profile.systemPrompt` (saved as `config.systemPrompt`), `profile.results`, `profile.logs` (defaults to `[]` if undefined), and `profile.timestamp` (converted to ISO for `created_at`).
+ * @returns `{ success: true }` on successful insert, or `{ success: false, error: string }` containing an error message when the operation fails or Supabase is not configured.
+ */
 export async function saveRun(profile: ModelProfile) {
     if (!supabase) {
         return { success: false, error: 'Supabase is not configured' };

@@ -1,6 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 
+/**
+ * Render the About page describing the AI Psychometrics Lab, its mission, methodology (SICWA), and why the work matters.
+ *
+ * @returns The About page JSX element containing structured informational sections and navigation links to "Run a Test" and "Explore Models".
+ */
 export default function AboutPage() {
     return (
         <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
