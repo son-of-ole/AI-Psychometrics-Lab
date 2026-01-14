@@ -33,8 +33,17 @@ interface MetricBarChartProps {
     maxValue: number; // 120 for Big5, 100 for others
 }
 
-import { Download } from 'lucide-react';
+import { Download, Loader2 } from 'lucide-react';
 import React, { useRef, useState } from 'react';
+
+const ensureOpaqueColor = (color: string): string => {
+    if (color.startsWith('rgba')) {
+        return color.replace(/[\d.]+\)$/, '1)');
+    }
+    // If hex or other format, return as is (assuming opaque) or could implement hex->rgba logic
+    // For this project context, simple rgba fix is the primary need.
+    return color;
+};
 
 export function MetricBarChart({ metricName, description, models, maxValue }: MetricBarChartProps) {
     const chartRef = useRef<HTMLDivElement>(null);
@@ -78,7 +87,7 @@ export function MetricBarChart({ metricName, description, models, maxValue }: Me
                 label: metricName,
                 data: models.map(m => m.value),
                 backgroundColor: models.map(m => m.color),
-                borderColor: models.map(m => m.color.replace('0.5', '1')),
+                borderColor: models.map(m => ensureOpaqueColor(m.color)),
                 borderWidth: 1,
             },
         ],
@@ -127,7 +136,7 @@ export function MetricBarChart({ metricName, description, models, maxValue }: Me
                             className="p-1 hover:bg-gray-100 rounded-full text-gray-400 hover:text-indigo-600 transition-colors ml-1"
                             title="Download Chart Image"
                         >
-                            {isDownloading ? <span className="text-xs animate-spin">⏳</span> : <Download className="w-4 h-4" />}
+                            {isDownloading ? <Loader2 className="w-4 h-4 animate-spin text-indigo-600" /> : <Download className="w-4 h-4" />}
                         </button>
                     </div>
                     <div className="text-[10px] font-bold opacity-60 uppercase tracking-widest text-right leading-tight text-indigo-600 mt-1">

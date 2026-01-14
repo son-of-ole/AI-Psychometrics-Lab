@@ -132,7 +132,9 @@ export function CompareClientView({ comparisonModels }: CompareClientViewProps) 
                                 <tbody>
                                     {comparisonModels.map((m, i) => {
                                         const entries = Object.entries(m.scores);
-                                        const maxTrait = entries.reduce((a, b) => a[1] > b[1] ? a : b);
+                                        const maxTrait = entries.length > 0
+                                            ? entries.reduce((a, b) => a[1] > b[1] ? a : b)
+                                            : ['N/A', 0] as [string, number];
                                         const traitName = BIG_FIVE_DEFINITIONS[maxTrait[0]]?.title || maxTrait[0];
                                         const color = CHART_COLORS[i % CHART_COLORS.length].replace('0.5', '1');
 
