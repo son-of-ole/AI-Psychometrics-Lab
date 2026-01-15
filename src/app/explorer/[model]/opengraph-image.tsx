@@ -47,7 +47,16 @@ export default async function Image({ params }: { params: Promise<{ model: strin
     // MOCK DATA FALLBACK vs REAL DATA
     // We try to fetch. If it fails (null), we use MOCK data to ensure the visual generates for testing.
     let modelName = decodeURIComponent(model);
-    let profile = await getModelProfile(modelName);
+    console.log(`[OG] Generating for model: ${modelName}`);
+
+    let profile = null;
+    try {
+        console.log('[OG] Fetching profile...');
+        profile = await getModelProfile(modelName);
+        console.log(`[OG] Profile fetched: ${profile ? 'Found' : 'Null'}`);
+    } catch (e) {
+        console.error('[OG] Profile fetch error:', e);
+    }
 
     // If profile is null (e.g. server crash or no data), use mock data for "safe" rendering during dev?
     // Actually, in prod we want real data. But for "Does it match this?", I'll use real data logic.
@@ -76,21 +85,25 @@ export default async function Image({ params }: { params: Promise<{ model: strin
     // Font Loading
     let interSemiBold: ArrayBuffer | null = null;
     try {
+        console.log('[OG] Fetching Font...');
         const response = await fetch('https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYMZs.woff');
         if (response.ok) {
             interSemiBold = await response.arrayBuffer();
+            console.log('[OG] Font fetched successfully');
         } else {
-            console.error('Failed to fetch font:', response.statusText);
+            console.error('[OG] Failed to fetch font:', response.statusText);
+            throw new Error(`Font fetch failed: ${response.statusText}`);
         }
     } catch (e) {
-        console.error('Error fetching font:', e);
+        console.error('[OG] Error fetching font:', e);
+        throw e; // Fail hard so we see the error in logs instead of blank image
     }
 
     return new ImageResponse(
         (
             <div style={{
                 height: '100%', width: '100%', display: 'flex', flexDirection: 'column',
-                backgroundColor: '#050B14', color: 'white', fontFamily: interSemiBold ? '"Inter", sans-serif' : 'sans-serif',
+                backgroundColor: '#050B14', color: 'white', fontFamily: '"Inter", sans-serif',
                 padding: '30px'
             }}>
                 {/* HEADLINE */}
@@ -279,14 +292,14 @@ export default async function Image({ params }: { params: Promise<{ model: strin
         ),
         {
             ...size,
-            fonts: interSemiBold ? [
+            fonts: [
                 {
                     name: 'Inter',
-                    data: interSemiBold,
+                    data: interSemiBold!,
                     style: 'normal',
                     weight: 600,
                 },
-            ] : [],
+            ],
         }
     );
 }
