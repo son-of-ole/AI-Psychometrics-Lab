@@ -73,15 +73,24 @@ export default async function Image({ params }: { params: Promise<{ model: strin
     const radarRadius = 90;
 
     // Font Loading
-    const interSemiBold = await fetch(
-        new URL('https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYMZs.woff', import.meta.url)
-    ).then((res) => res.arrayBuffer());
+    // Font Loading
+    let interSemiBold: ArrayBuffer | null = null;
+    try {
+        const response = await fetch('https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYMZs.woff');
+        if (response.ok) {
+            interSemiBold = await response.arrayBuffer();
+        } else {
+            console.error('Failed to fetch font:', response.statusText);
+        }
+    } catch (e) {
+        console.error('Error fetching font:', e);
+    }
 
     return new ImageResponse(
         (
             <div style={{
                 height: '100%', width: '100%', display: 'flex', flexDirection: 'column',
-                backgroundColor: '#050B14', color: 'white', fontFamily: '"Inter", sans-serif',
+                backgroundColor: '#050B14', color: 'white', fontFamily: interSemiBold ? '"Inter", sans-serif' : 'sans-serif',
                 padding: '30px'
             }}>
                 {/* HEADLINE */}
@@ -89,8 +98,8 @@ export default async function Image({ params }: { params: Promise<{ model: strin
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <div style={{ display: 'flex', alignItems: 'baseline' }}>
                             <span style={{ fontSize: 48, fontWeight: 900, marginRight: 15 }}>{modelName}</span>
-                            <span style={{ fontSize: 32, fontWeight: 700, color: '#6b7280' }}>(Average)</span>
-                            <span style={{ fontSize: 32, fontWeight: 700, color: '#374151', marginLeft: 15 }}>(Base Model)</span>
+                            <span style={{ fontSize: 32, fontWeight: 600, color: '#6b7280' }}>(Average)</span>
+                            <span style={{ fontSize: 32, fontWeight: 600, color: '#374151', marginLeft: 15 }}>(Base Model)</span>
                         </div>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
@@ -270,14 +279,14 @@ export default async function Image({ params }: { params: Promise<{ model: strin
         ),
         {
             ...size,
-            fonts: [
+            fonts: interSemiBold ? [
                 {
                     name: 'Inter',
                     data: interSemiBold,
                     style: 'normal',
-                    weight: 700,
+                    weight: 600,
                 },
-            ],
+            ] : [],
         }
     );
 }
