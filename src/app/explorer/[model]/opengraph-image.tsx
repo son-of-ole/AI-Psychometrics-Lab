@@ -217,98 +217,97 @@ export default async function Image({ params }: { params: Promise<{ model: strin
                             <div style={{ position: 'absolute', top: 100, left: 10, display: 'flex' }}>
                                 <span style={{ fontSize: 12, fontWeight: 600, color: '#94a3b8' }}>Conscientiousness</span>
                             </div>
-                        </svg>
-                    </div>
-
-                    {/* COL 2: MBTI */}
-                    <div style={{ display: 'flex', flex: 1, backgroundColor: '#0B1221', borderRadius: 16, border: '1px solid #1e293b', padding: 20, flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
-                        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, backgroundColor: '#2563eb' }} />
-                        <div style={{ width: '100%', fontSize: 12, fontWeight: 600, color: '#60a5fa', letterSpacing: '1px', marginBottom: 20, textTransform: 'uppercase' }}>JUNGIAN TYPE</div>
-
-                        <div style={{ display: 'flex', fontSize: 80, fontWeight: 600, color: '#3b82f6', lineHeight: 1, marginBottom: 5 }}>{mbtiType}</div>
-                        <div style={{ display: 'flex', fontSize: 12, fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 40 }}>Estimated Type</div>
-
-                        {/* Slider Bars */}
-                        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 15 }}>
-                            {[['I', 'E'], ['S', 'N'], ['T', 'F'], ['J', 'P']].map(([L, R]) => {
-                                const lScore = mbti[L as keyof typeof mbti] || 0;
-                                const rScore = mbti[R as keyof typeof mbti] || 0;
-                                const total = lScore + rScore;
-                                const ratio = total > 0 ? lScore / total : 0.5;
-                                let color = '#3b82f6';
-                                if (L === 'S') color = '#22c55e';
-
-                                return (
-                                    <div key={L + R} style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                                        <span style={{ width: 15, fontWeight: 600, color: ratio >= 0.5 ? '#fff' : '#64748b', fontSize: 12 }}>{L}</span>
-                                        <div style={{ flex: 1, height: 6, backgroundColor: '#1f2937', borderRadius: 3, margin: '0 10px', position: 'relative', display: 'flex' }}>
-                                            <div style={{ width: `${ratio * 100}%`, height: '100%', backgroundColor: ratio >= 0.5 ? color : '#1f2937', borderRadius: '3px 0 0 3px' }} />
-                                            <div style={{ width: `${(1 - ratio) * 100}%`, height: '100%', backgroundColor: ratio < 0.5 ? color : '#1f2937', borderRadius: '0 3px 3px 0' }} />
-                                        </div>
-                                        <span style={{ width: 15, fontWeight: 600, color: ratio < 0.5 ? '#fff' : '#64748b', fontSize: 12, textAlign: 'right' }}>{R}</span>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </div>
-
-                    {/* COL 3: DISC */}
-                    <div style={{ display: 'flex', flex: 1, backgroundColor: '#0B1221', borderRadius: 16, border: '1px solid #1e293b', padding: 20, flexDirection: 'column', position: 'relative' }}>
-                        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, backgroundColor: '#2563eb' }} />
-                        <div style={{ width: '100%', fontSize: 12, fontWeight: 600, color: '#60a5fa', letterSpacing: '1px', marginBottom: 20, textTransform: 'uppercase' }}>DISC ASSESSMENT</div>
-
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 40 }}>
-                            {['D', 'I', 'S', 'C'].map(k => (
-                                <div key={k} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                    <span style={{ fontSize: 24, fontWeight: 600, color: k === 'D' ? '#ef4444' : k === 'I' ? '#eab308' : k === 'S' ? '#22c55e' : '#3b82f6', marginBottom: 5 }}>{k}</span>
-                                    <span style={{ fontSize: 28, fontWeight: 600, color: '#fff' }}>{Math.round(disc[k as keyof typeof disc] || 0)}</span>
-                                </div>
-                            ))}
                         </div>
 
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 'auto' }}>
-                            {['Dominance', 'Influence', 'Steadiness', 'Compliance'].map((label, i) => {
-                                const key = label[0];
-                                const color = key === 'D' ? '#ef4444' : key === 'I' ? '#eab308' : key === 'S' ? '#22c55e' : '#3b82f6';
-                                return (
-                                    <div key={label} style={{ display: 'flex', flexDirection: 'column' }}>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: '#94a3b8', marginBottom: 3 }}>
-                                            <span>{label}</span>
-                                            <span>{Math.round(disc[key] || 0)}/28</span>
+                        {/* COL 2: MBTI */}
+                        <div style={{ display: 'flex', flex: 1, backgroundColor: '#0B1221', borderRadius: 16, border: '1px solid #1e293b', padding: 20, flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
+                            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, backgroundColor: '#2563eb' }} />
+                            <div style={{ width: '100%', fontSize: 12, fontWeight: 600, color: '#60a5fa', letterSpacing: '1px', marginBottom: 20, textTransform: 'uppercase' }}>JUNGIAN TYPE</div>
+
+                            <div style={{ display: 'flex', fontSize: 80, fontWeight: 600, color: '#3b82f6', lineHeight: 1, marginBottom: 5 }}>{mbtiType}</div>
+                            <div style={{ display: 'flex', fontSize: 12, fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: 40 }}>Estimated Type</div>
+
+                            {/* Slider Bars */}
+                            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 15 }}>
+                                {[['I', 'E'], ['S', 'N'], ['T', 'F'], ['J', 'P']].map(([L, R]) => {
+                                    const lScore = mbti[L as keyof typeof mbti] || 0;
+                                    const rScore = mbti[R as keyof typeof mbti] || 0;
+                                    const total = lScore + rScore;
+                                    const ratio = total > 0 ? lScore / total : 0.5;
+                                    let color = '#3b82f6';
+                                    if (L === 'S') color = '#22c55e';
+
+                                    return (
+                                        <div key={L + R} style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                                            <span style={{ width: 15, fontWeight: 600, color: ratio >= 0.5 ? '#fff' : '#64748b', fontSize: 12 }}>{L}</span>
+                                            <div style={{ flex: 1, height: 6, backgroundColor: '#1f2937', borderRadius: 3, margin: '0 10px', position: 'relative', display: 'flex' }}>
+                                                <div style={{ width: `${ratio * 100}%`, height: '100%', backgroundColor: ratio >= 0.5 ? color : '#1f2937', borderRadius: '3px 0 0 3px' }} />
+                                                <div style={{ width: `${(1 - ratio) * 100}%`, height: '100%', backgroundColor: ratio < 0.5 ? color : '#1f2937', borderRadius: '0 3px 3px 0' }} />
+                                            </div>
+                                            <span style={{ width: 15, fontWeight: 600, color: ratio < 0.5 ? '#fff' : '#64748b', fontSize: 12, textAlign: 'right' }}>{R}</span>
                                         </div>
-                                        <div style={{ display: 'flex', width: '100%', height: 10, backgroundColor: '#1e293b', borderRadius: 5 }}>
-                                            <div style={{ width: `${(disc[key] / 28) * 100}%`, height: '100%', backgroundColor: color, borderRadius: 5 }} />
-                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+
+                        {/* COL 3: DISC */}
+                        <div style={{ display: 'flex', flex: 1, backgroundColor: '#0B1221', borderRadius: 16, border: '1px solid #1e293b', padding: 20, flexDirection: 'column', position: 'relative' }}>
+                            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, backgroundColor: '#2563eb' }} />
+                            <div style={{ width: '100%', fontSize: 12, fontWeight: 600, color: '#60a5fa', letterSpacing: '1px', marginBottom: 20, textTransform: 'uppercase' }}>DISC ASSESSMENT</div>
+
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 40 }}>
+                                {['D', 'I', 'S', 'C'].map(k => (
+                                    <div key={k} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                        <span style={{ fontSize: 24, fontWeight: 600, color: k === 'D' ? '#ef4444' : k === 'I' ? '#eab308' : k === 'S' ? '#22c55e' : '#3b82f6', marginBottom: 5 }}>{k}</span>
+                                        <span style={{ fontSize: 28, fontWeight: 600, color: '#fff' }}>{Math.round(disc[k as keyof typeof disc] || 0)}</span>
                                     </div>
-                                )
-                            })}
+                                ))}
+                            </div>
+
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 'auto' }}>
+                                {['Dominance', 'Influence', 'Steadiness', 'Compliance'].map((label, i) => {
+                                    const key = label[0];
+                                    const color = key === 'D' ? '#ef4444' : key === 'I' ? '#eab308' : key === 'S' ? '#22c55e' : '#3b82f6';
+                                    return (
+                                        <div key={label} style={{ display: 'flex', flexDirection: 'column' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: '#94a3b8', marginBottom: 3 }}>
+                                                <span>{label}</span>
+                                                <span>{Math.round(disc[key] || 0)}/28</span>
+                                            </div>
+                                            <div style={{ display: 'flex', width: '100%', height: 10, backgroundColor: '#1e293b', borderRadius: 5 }}>
+                                                <div style={{ width: `${(disc[key] / 28) * 100}%`, height: '100%', backgroundColor: color, borderRadius: 5 }} />
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    {/* FOOTER */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 15, paddingTop: 10, borderTop: '1px solid #1e293b', fontSize: 12, color: '#64748b', fontWeight: 600 }}>
+                        <div>
+                            {new Date().toLocaleDateString()} • explorer/{modelName}
+                        </div>
+                        <div>
+                            MADE BY: AI PSYCHOMETRICS LAB
                         </div>
                     </div>
 
                 </div>
-
-                {/* FOOTER */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 15, paddingTop: 10, borderTop: '1px solid #1e293b', fontSize: 12, color: '#64748b', fontWeight: 600 }}>
-                    <div>
-                        {new Date().toLocaleDateString()} • explorer/{modelName}
-                    </div>
-                    <div>
-                        MADE BY: AI PSYCHOMETRICS LAB
-                    </div>
-                </div>
-
-            </div>
-        ),
-        {
-            ...size,
-            fonts: [
+                ),
+                {
+                    ...size,
+                    fonts: [
                 {
                     name: 'Inter',
-                    data: interSemiBold!,
-                    style: 'normal',
-                    weight: 600,
+                data: interSemiBold!,
+                style: 'normal',
+                weight: 600,
                 },
-            ],
+                ],
         }
-    );
+                );
 }
