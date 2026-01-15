@@ -286,28 +286,30 @@ export default async function Image({ params }: { params: Promise<{ model: strin
 
                     </div>
 
-                    {/* FOOTER */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 15, paddingTop: 10, borderTop: '1px solid #1e293b', fontSize: 12, color: '#64748b', fontWeight: 600 }}>
-                        <div>
-                            {new Date().toLocaleDateString()} • explorer/{modelName}
-                        </div>
-                        <div>
-                            MADE BY: AI PSYCHOMETRICS LAB
-                        </div>
-                    </div>
-
                 </div>
-                ),
-                {
-                    ...size,
-                    fonts: [
+
+                {/* FOOTER */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 15, paddingTop: 10, borderTop: '1px solid #1e293b', fontSize: 12, color: '#64748b', fontWeight: 600 }}>
+                    <div>
+                        {new Date().toLocaleDateString()} • explorer/{modelName}
+                    </div>
+                    <div>
+                        MADE BY: AI PSYCHOMETRICS LAB
+                    </div>
+                </div>
+
+            </div>
+        ),
+        {
+            ...size,
+            fonts: [
                 {
                     name: 'Inter',
-                data: interSemiBold!,
-                style: 'normal',
-                weight: 600,
+                    data: interSemiBold!,
+                    style: 'normal',
+                    weight: 600,
                 },
-                ],
+            ],
         }
-                );
+    );
 }
