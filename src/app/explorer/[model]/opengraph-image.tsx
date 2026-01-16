@@ -194,101 +194,58 @@ export default async function Image({ params }: { params: Promise<{ model: strin
                     <div style={{ display: 'flex', flex: 1, backgroundColor: '#0B1221', borderRadius: 16, border: '1px solid #1E293B', padding: 24, flexDirection: 'column', alignItems: 'center' }}>
                         <div style={{ display: 'flex', width: '100%', fontSize: 14, fontWeight: 700, color: '#94a3b8', letterSpacing: '0.1em', marginBottom: 20 }}>BIG FIVE PROFILE</div>
 
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: 260, position: 'relative' }}>
-                            <svg width="260" height="260" viewBox="0 0 300 300">
-                                {/* Hexagonal Grid */}
-                                {[0.2, 0.4, 0.6, 0.8, 1.0].map(r => (
-                                    <polygon
-                                        key={r}
-                                        points={generateBgPolygon(radarCenter, radarRadius * r)}
-                                        fill="none"
-                                        stroke="#1e293b"
-                                        strokeWidth="1"
-                                    />
-                                ))}
-                                {/* Axis Lines */}
-                                {Array.from({ length: 5 }).map((_, i) => {
+                        {/* SVG Chart */}
+                        {/* SVG Chart */}
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: 300, position: 'relative' }}>
+                            <svg width="300" height="300" viewBox="0 0 300 300">
+                                {/* Background Hexagons */}
+                                <polygon points={generateBgPolygon(radarCenter, radarRadius)} fill="none" stroke="#334155" strokeWidth="1" />
+                                <polygon points={generateBgPolygon(radarCenter, radarRadius * 0.75)} fill="none" stroke="#1e293b" strokeWidth="1" />
+                                <polygon points={generateBgPolygon(radarCenter, radarRadius * 0.5)} fill="none" stroke="#1e293b" strokeWidth="1" />
+                                <polygon points={generateBgPolygon(radarCenter, radarRadius * 0.25)} fill="none" stroke="#1e293b" strokeWidth="1" />
+
+                                {/* Axes */}
+                                {[0, 1, 2, 3, 4].map(i => {
                                     const angle = (Math.PI * 2 * i) / 5 - Math.PI / 2;
-                                    return (
-                                        <line
-                                            key={i}
-                                            x1={radarCenter.x}
-                                            y1={radarCenter.y}
-                                            x2={radarCenter.x + Math.cos(angle) * radarRadius}
-                                            y2={radarCenter.y + Math.sin(angle) * radarRadius}
-                                            stroke="#1e293b"
-                                            strokeWidth="1"
-                                        />
-                                    );
+                                    const x = radarCenter.x + Math.cos(angle) * radarRadius;
+                                    const y = radarCenter.y + Math.sin(angle) * radarRadius;
+                                    return <line key={i} x1={radarCenter.x} y1={radarCenter.y} x2={x} y2={y} stroke="#334155" strokeWidth="1" />;
                                 })}
-                                {/* Data Path */}
-                                <polygon
-                                    points={generateRadarPath(radarScores, radarCenter, radarRadius)}
-                                    fill="rgba(59, 130, 246, 0.3)"
-                                    stroke="#3b82f6"
-                                    strokeWidth="2"
-                                />
-                                {/* Data Points */}
+
+                                {/* Data Polygon */}
+                                <polygon points={generateRadarPath(radarScores, radarCenter, radarRadius)} fill="rgba(59, 130, 246, 0.2)" stroke="#3b82f6" strokeWidth="2" />
+
+                                {/* Points */}
                                 {radarScores.map((score, i) => {
                                     const angle = (Math.PI * 2 * i) / 5 - Math.PI / 2;
                                     const r = (score / 120) * radarRadius;
-                                    return (
-                                        <circle
-                                            key={i}
-                                            cx={radarCenter.x + Math.cos(angle) * r}
-                                            cy={radarCenter.y + Math.sin(angle) * r}
-                                            r="4"
-                                            fill="#fff"
-                                            stroke="#3b82f6"
-                                            strokeWidth="2"
-                                        />
-                                    );
-                                })}
-                                {/* Labels Overlay */}
-                                {['Neuroticism', 'Extraversion', 'Openness', 'Agreeableness', 'Conscientiousness'].map((label, i) => {
-                                    const angle = (Math.PI * 2 * i) / 5 - Math.PI / 2;
-                                    const r = radarRadius + 25;
                                     const x = radarCenter.x + Math.cos(angle) * r;
                                     const y = radarCenter.y + Math.sin(angle) * r;
-                                    return (
-                                        <text
-                                            key={label}
-                                            x={x}
-                                            y={y}
-                                            fill="#94a3b8"
-                                            fontSize="10"
-                                            fontWeight="700"
-                                            textAnchor="middle"
-                                            dominantBaseline="middle"
-                                        >
-                                            {label}
-                                        </text>
-                                    );
+                                    return <circle key={i} cx={x} cy={y} r="3" fill="#60a5fa" />;
                                 })}
-                            </svg>
-                        </div>
 
-                        {/* Big Five Numeric Labels Grid */}
-                        <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', gap: 10, marginTop: 20 }}>
-                            <div style={{ display: 'flex', width: '45%', justifyContent: 'space-between' }}>
-                                <span style={{ color: '#94a3b8', fontSize: 13, fontWeight: 700 }}>Neuroticism</span>
-                                <span style={{ color: '#ef4444', fontSize: 13, fontWeight: 700 }}>{Math.round(bigFive['N'] || 0)}</span>
+                            </svg>
+
+                            {/* LABELS (Overlay Divs for Satori Support) */}
+                            {/* Neuroticism (Top) */}
+                            <div style={{ position: 'absolute', top: 30, left: 0, width: '100%', display: 'flex', justifyContent: 'center' }}>
+                                <span style={{ fontSize: 12, fontWeight: 600, color: '#94a3b8' }}>Neuroticism</span>
                             </div>
-                            <div style={{ display: 'flex', width: '45%', justifyContent: 'space-between' }}>
-                                <span style={{ color: '#94a3b8', fontSize: 13, fontWeight: 700 }}>Extraversion</span>
-                                <span style={{ color: '#fbbf24', fontSize: 13, fontWeight: 700 }}>{Math.round(bigFive['E'] || 0)}</span>
+                            {/* Extraversion (Top Right) */}
+                            <div style={{ position: 'absolute', top: 100, left: 230, display: 'flex' }}>
+                                <span style={{ fontSize: 12, fontWeight: 600, color: '#94a3b8' }}>Extraversion</span>
                             </div>
-                            <div style={{ display: 'flex', width: '45%', justifyContent: 'space-between' }}>
-                                <span style={{ color: '#94a3b8', fontSize: 13, fontWeight: 700 }}>Openness</span>
-                                <span style={{ color: '#3b82f6', fontSize: 13, fontWeight: 700 }}>{Math.round(bigFive['O'] || 0)}</span>
+                            {/* Openness (Bottom Right) */}
+                            <div style={{ position: 'absolute', top: 260, left: 200, display: 'flex' }}>
+                                <span style={{ fontSize: 12, fontWeight: 600, color: '#94a3b8' }}>Openness</span>
                             </div>
-                            <div style={{ display: 'flex', width: '45%', justifyContent: 'space-between' }}>
-                                <span style={{ color: '#94a3b8', fontSize: 13, fontWeight: 700 }}>Agreeableness</span>
-                                <span style={{ color: '#a855f7', fontSize: 13, fontWeight: 700 }}>{Math.round(bigFive['A'] || 0)}</span>
+                            {/* Agreeableness (Bottom Left) */}
+                            <div style={{ position: 'absolute', top: 260, left: 40, display: 'flex' }}>
+                                <span style={{ fontSize: 12, fontWeight: 600, color: '#94a3b8' }}>Agreeableness</span>
                             </div>
-                            <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
-                                <span style={{ color: '#94a3b8', fontSize: 13, fontWeight: 700 }}>Conscientiousness</span>
-                                <span style={{ color: '#10b981', fontSize: 13, fontWeight: 700 }}>{Math.round(bigFive['C'] || 0)}</span>
+                            {/* Conscientiousness (Top Left) */}
+                            <div style={{ position: 'absolute', top: 100, left: 10, display: 'flex' }}>
+                                <span style={{ fontSize: 12, fontWeight: 600, color: '#94a3b8' }}>Conscientiousness</span>
                             </div>
                         </div>
 
