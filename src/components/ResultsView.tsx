@@ -551,22 +551,38 @@ export function ResultsView({ results, readOnly = false, sourceLabel }: ResultsV
                 {/* Optional: Visible Preview (Scaled Down) */}
                 <div className="mt-8">
                     <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Image Preview</h4>
-                    <div className="overflow-hidden border border-gray-300 rounded-lg bg-gray-100 p-2 sm:p-4 flex justify-center items-start transition-all duration-300 w-full">
-                        {/* Width/Height Wrapper matching the SCALED dimensions */}
-                        <div className="relative shrink-0 w-full max-w-[300px]
-                        h-[200px]
-                        sm:w-[420px] sm:h-[280px]
-                        md:w-[600px] md:h-[400px]
-                        transition-all duration-300">
-
-                            {/* Scaled Content - Fixed at original 1200x800 */}
-                            <div className="absolute top-0 left-0 origin-top-left
-                            w-[1200px] h-[800px]
-                            scale-[0.25]
-                            sm:scale-[0.35]
-                            md:scale-[0.5]
-                            transition-transform duration-300">
-                                <SummaryCard profile={results} sourceLabel={sourceLabel} />
+                    <div className="overflow-hidden border border-gray-300 rounded-lg bg-gray-100 p-2 sm:p-4 w-full">
+                        {/* Responsive wrapper with max width and centering */}
+                        <div className="w-full max-w-3xl mx-auto">
+                            {/* Aspect-ratio container maintains 1200:800 (3:2) proportions */}
+                            <div className="relative w-full overflow-hidden" style={{ paddingBottom: '66.667%' }}>
+                                {/* Scaled Content - Fixed at original 1200x800, CSS transforms handle sizing */}
+                                <div
+                                    className="absolute top-0 left-0 w-[1200px] h-[800px] origin-top-left
+                                    scale-[calc(min(100cqw,768px)/1200)]"
+                                    style={{
+                                        /* Fallback for browsers without cqw: use vw-based calc */
+                                        transform: 'scale(var(--preview-scale, 0.5))'
+                                    }}
+                                    ref={(el) => {
+                                        if (!el) return;
+                                        const parent = el.parentElement;
+                                        if (!parent) return;
+                                        // Set initial scale and observe resize
+                                        const setScale = () => {
+                                            const scale = parent.clientWidth / 1200;
+                                            el.style.setProperty('--preview-scale', String(scale));
+                                        };
+                                        setScale();
+                                        const observer = new ResizeObserver(() => setScale());
+                                        observer.observe(parent);
+                                        // Store reference for cleanup on unmount
+                                        (el as any).__resizeObserver = observer;
+                                        return () => observer.disconnect();
+                                    }}
+                                >
+                                    <SummaryCard profile={results} sourceLabel={sourceLabel} />
+                                </div>
                             </div>
                         </div>
                     </div>
