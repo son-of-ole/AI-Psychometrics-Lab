@@ -17,7 +17,7 @@ export interface InventoryResult {
   traitScores: Record<string, number>; // traitId -> score
   type?: string; // For MBTI (e.g. "INTJ")
   psi?: Record<string, number>; // For MBTI (Preference Strength Index)
-  details?: any;
+  details?: Record<string, unknown>;
 }
 
 export interface ModelProfile {
