@@ -1,5 +1,3 @@
-import { InventoryResult } from './types';
-
 /**
  * Calibration module for psychometric scoring.
  * 

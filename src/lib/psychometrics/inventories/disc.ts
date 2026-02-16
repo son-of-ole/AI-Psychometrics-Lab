@@ -335,7 +335,7 @@ export const DISC_ITEMS: DISCItem[] = [
     }
 ];
 
-export function calculateDISCScores(rawScores: Record<string, any[]>, enableCalibration: boolean = true): InventoryResult {
+export function calculateDISCScores(rawScores: Record<string, number[]>, enableCalibration: boolean = true): InventoryResult {
     // rawScores will contain objects like { most: "Word", least: "Word" }
     // But wait, our system stores number[] usually.
     // For DISC, we need to store the actual word selected or the index.
@@ -403,7 +403,7 @@ export function calculateDISCScores(rawScores: Record<string, any[]>, enableCali
 
     return {
         inventoryName: "DISC Assessment",
-        rawScores: rawScores as any,
+        rawScores,
         traitScores: {
             ...calibratedScores,
             _raw_D: rawScoresQuadrants.D,

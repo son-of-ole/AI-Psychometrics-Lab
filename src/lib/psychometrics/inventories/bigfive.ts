@@ -125,7 +125,6 @@ export const BIG_FIVE_ITEMS: InventoryItem[] = [
 ];
 
 export function calculateBigFiveScores(rawScores: Record<string, number[]>, enableCalibration: boolean = true): InventoryResult {
-    const traitScores: Record<string, number> = {};
     const facetScores: Record<string, number> = {};
     const rawDomainScores: Record<string, number> = {};
 

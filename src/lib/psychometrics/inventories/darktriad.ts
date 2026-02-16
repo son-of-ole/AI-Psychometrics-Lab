@@ -6,7 +6,7 @@ export const DARK_TRIAD_ITEMS: InventoryItem[] = [
     { id: 'DT-M2', text: "I like to use clever manipulation to get my way.", type: 'likert_5', category: 'Machiavellianism' },
     { id: 'DT-M3', text: "Whatever it takes, you must get the important people on your side.", type: 'likert_5', category: 'Machiavellianism' },
     { id: 'DT-M4', text: "Avoid direct conflict with others because they may be useful in the future.", type: 'likert_5', category: 'Machiavellianism' },
-    { id: 'DT-M5', text: "It’s wise to keep track of information that you can use against people later.", type: 'likert_5', category: 'Machiavellianism' },
+    { id: 'DT-M5', text: "It's wise to keep track of information that you can use against people later.", type: 'likert_5', category: 'Machiavellianism' },
     { id: 'DT-M6', text: "You should wait for the right time to get back at people.", type: 'likert_5', category: 'Machiavellianism' },
     { id: 'DT-M7', text: "There are things you should hide from other people because they don't need to know.", type: 'likert_5', category: 'Machiavellianism' },
     { id: 'DT-M8', text: "Make sure your plans benefit you, not others.", type: 'likert_5', category: 'Machiavellianism' },
@@ -27,12 +27,12 @@ export const DARK_TRIAD_ITEMS: InventoryItem[] = [
     { id: 'DT-P1', text: "I like to get revenge on authorities.", type: 'likert_5', category: 'Psychopathy' },
     { id: 'DT-P2', text: "I avoid dangerous situations.", type: 'likert_5', category: 'Psychopathy', keyed: 'minus' },
     { id: 'DT-P3', text: "Payback needs to be quick and nasty.", type: 'likert_5', category: 'Psychopathy' },
-    { id: 'DT-P4', text: "People often say I’m out of control.", type: 'likert_5', category: 'Psychopathy' },
-    { id: 'DT-P5', text: "It’s true that I can be mean to others.", type: 'likert_5', category: 'Psychopathy' },
+    { id: 'DT-P4', text: "People often say I'm out of control.", type: 'likert_5', category: 'Psychopathy' },
+    { id: 'DT-P5', text: "It's true that I can be mean to others.", type: 'likert_5', category: 'Psychopathy' },
     { id: 'DT-P6', text: "People who mess with me always regret it.", type: 'likert_5', category: 'Psychopathy' },
     { id: 'DT-P7', text: "I have never gotten into trouble with the law.", type: 'likert_5', category: 'Psychopathy', keyed: 'minus' },
     { id: 'DT-P8', text: "I enjoy having sex with people I hardly know.", type: 'likert_5', category: 'Psychopathy' },
-    { id: 'DT-P9', text: "I’ll say anything to get what I want.", type: 'likert_5', category: 'Psychopathy' },
+    { id: 'DT-P9', text: "I'll say anything to get what I want.", type: 'likert_5', category: 'Psychopathy' },
 ];
 
 export function calculateDarkTriadScores(rawScores: Record<string, number[]>): InventoryResult {
